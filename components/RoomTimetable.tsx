@@ -311,6 +311,7 @@ export const RoomTimetable: React.FC = () => {
                                 const occupants = room ? getRoomStatus(room.id, day, period) : [];
                                 const isOver = room && occupants.length > room.capacity;
                                 const isSingle = occupants.length === 1;
+                                const isGrid = occupants.length >= 3;
                                 
                                 // Check if this period is an ETC (Break/Lunch) for BOTH tracks if dual
                                 const isBothEtc = tLeft?.type === 'ETC' && (showRightSide ? tRight?.type === 'ETC' : true);
@@ -332,14 +333,15 @@ export const RoomTimetable: React.FC = () => {
                                                 </div>
                                             );
                                         })() : (
-                                            <div className="w-full h-full flex flex-col gap-1 overflow-y-auto">
+                                            <div className={`w-full h-full overflow-y-auto ${isGrid ? 'grid grid-cols-2 gap-0.5 content-start' : 'flex flex-col gap-1'}`}>
                                                 {occupants.map((occ, idx) => {
                                                     const baseColor = getSubjectColor(occ.subject);
                                                     const finalStyle = getGradeAdjustedStyle(baseColor, occ.classId, occ.customStyle);
                                                     
                                                     return (
-                                                        <div key={idx} className={`w-full text-xs p-1.5 rounded border shadow-sm text-center font-bold truncate ${finalStyle}`}>
-                                                            {formatClassId(occ.classId, teacherConfig)} ({occ.subject})
+                                                        <div key={idx} className={`w-full rounded border shadow-sm text-center font-bold truncate ${finalStyle} ${isGrid ? 'text-[9px] p-0.5 leading-tight' : 'text-xs p-1.5'}`} title={`${formatClassId(occ.classId, teacherConfig)} (${occ.subject})`}>
+                                                            {formatClassId(occ.classId, teacherConfig)}
+                                                            {!isGrid && ` (${occ.subject})`}
                                                         </div>
                                                     );
                                                 })}

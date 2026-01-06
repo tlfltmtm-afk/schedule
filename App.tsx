@@ -9,10 +9,11 @@ import { TeacherManagement } from './components/TeacherManagement';
 import { ClassScheduleDecorator } from './components/ClassScheduleDecorator';
 import { RoomTimetable } from './components/RoomTimetable';
 import { TeacherTimetable } from './components/TeacherTimetable';
-import { Calendar, Settings as SettingsIcon, LayoutGrid, Map, Download, Menu, FolderOpen, Save, Users, Wand2, Unlock, KeyRound, FileText, Lock, FileSpreadsheet, CalendarRange } from 'lucide-react';
+import { RoomAssignment } from './components/RoomAssignment';
+import { Calendar, Settings as SettingsIcon, LayoutGrid, Map, Download, Menu, FolderOpen, Save, Users, Wand2, Unlock, KeyRound, FileText, Lock, FileSpreadsheet, CalendarRange, MapPin } from 'lucide-react';
 
 const AppContent: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'settings' | 'teachers' | 'master' | 'teacher_timetable' | 'class' | 'venue' | 'room_timetable' | 'decorator'>('settings');
+  const [activeTab, setActiveTab] = useState<'settings' | 'teachers' | 'master' | 'room_assignment' | 'teacher_timetable' | 'class' | 'venue' | 'room_timetable' | 'decorator'>('settings');
   const [showExport, setShowExport] = useState(false);
   
   // Auth Modal State
@@ -189,6 +190,7 @@ const AppContent: React.FC = () => {
     { id: 'settings', label: '설정', icon: <SettingsIcon size={18} />, restricted: true },
     { id: 'teachers', label: '전담교사 배정', icon: <Users size={18} />, restricted: true },
     { id: 'master', label: '전담 시간표 작성', icon: <LayoutGrid size={18} />, restricted: true },
+    { id: 'room_assignment', label: '특별실 시간표 작성', icon: <MapPin size={18} />, restricted: true }, // New Menu
     { id: 'teacher_timetable', label: '전담 시간표 조회', icon: <FileSpreadsheet size={18} />, restricted: false },
     { id: 'class', label: '학급 시간표 조회', icon: <Calendar size={18} />, restricted: false },
     { id: 'venue', label: '특별실 현황', icon: <Map size={18} />, restricted: false },
@@ -291,6 +293,7 @@ const AppContent: React.FC = () => {
         {activeTab === 'settings' && <Settings />}
         {activeTab === 'teachers' && <TeacherManagement />}
         {activeTab === 'master' && <MasterSchedule />}
+        {activeTab === 'room_assignment' && <RoomAssignment />}
         {activeTab === 'teacher_timetable' && <TeacherTimetable onNavigate={(tab) => setActiveTab(tab)} />}
         {activeTab === 'class' && <ClassSchedule onNavigate={(tab) => setActiveTab(tab)} />}
         {activeTab === 'venue' && <VenueStatus />}
