@@ -657,8 +657,39 @@ export const ClassSchedule: React.FC<Props> = ({ onNavigate }) => {
            </div>
         </div>
       </header>
-      <div id="class-schedule-container" className="flex-1 overflow-auto bg-slate-50 rounded-xl pb-16 scrollbar-thin"><div className="pb-8">{viewMode === 'single' ? <div className="max-w-5xl mx-auto mt-2 animate-in fade-in zoom-in-95 duration-300">{renderSingleView(selectedClass)}</div> : <div className="space-y-6 origin-top-left p-4 transition-transform" style={{ transform: `scale(${zoomLevel})`, width: `${100 / zoomLevel}%` }}>{[1, 2, 3, 4, 5, 6].map(grade => <div key={grade} className="flex gap-4"><div className="w-16 flex-shrink-0 flex items-center justify-center bg-slate-800 text-white font-bold rounded-lg shadow-md text-sm">{grade}학년</div><div className="flex-1 grid grid-flow-col auto-cols-max gap-4 overflow-x-auto pb-2 no-scrollbar">{classesByGrade[grade]?.map(classId => <div key={classId} className="w-56">{renderSingleView(classId, true)}</div>)}{classesByGrade[grade]?.length === 0 && <div className="text-slate-300 text-sm italic py-4">학급 없음</div>}</div></div>))}</div>}</div>
+      
+      {/* 시간표 본문 컨테이너 */}
+      <div id="class-schedule-container" className="flex-1 overflow-auto bg-slate-50 rounded-xl pb-16 scrollbar-thin">
+        <div className="pb-8">
+          {viewMode === 'single' ? (
+            <div className="max-w-5xl mx-auto mt-2 animate-in fade-in zoom-in-95 duration-300">
+              {renderSingleView(selectedClass)}
+            </div>
+          ) : (
+            <div className="space-y-6 origin-top-left p-4 transition-transform" style={{ transform: `scale(${zoomLevel})`, width: `${100 / zoomLevel}%` }}>
+              {[1, 2, 3, 4, 5, 6].map(grade => (
+                <div key={grade} className="flex gap-4">
+                  <div className="w-16 flex-shrink-0 flex items-center justify-center bg-slate-800 text-white font-bold rounded-lg shadow-md text-sm">
+                    {grade}학년
+                  </div>
+                  <div className="flex-1 grid grid-flow-col auto-cols-max gap-4 overflow-x-auto pb-2 no-scrollbar">
+                    {classesByGrade[grade]?.map(classId => (
+                      <div key={classId} className="w-56">
+                        {renderSingleView(classId, true)}
+                      </div>
+                    ))}
+                    {classesByGrade[grade]?.length === 0 && (
+                      <div className="text-slate-300 text-sm italic py-4">학급 없음</div>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
 
+      {/* 편집 모달 */}
       {editingSlot && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4">
               <div className="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 animate-in zoom-in-95">
@@ -740,6 +771,7 @@ export const ClassSchedule: React.FC<Props> = ({ onNavigate }) => {
           </div>
       )}
 
+      {/* 기타 블록 추가 모달 */}
       {isCustomModalOpen && (
           <div className="fixed inset-0 z-[70] flex items-center justify-center bg-black/50 p-4">
               <div className="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6 animate-in zoom-in-95">
